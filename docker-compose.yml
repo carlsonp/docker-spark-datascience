@@ -1,0 +1,42 @@
+version: '3.3'
+services:
+  sparkmaster:
+    image: 127.0.0.1:5000/sparkmaster
+    build: ./sparkmaster/
+    hostname: sparkmaster
+    ports:
+      - target: 8080
+        published: 8080
+        mode: host
+    command: /spark/startup.sh
+    deploy:
+      placement:
+        constraints:
+          - node.role == manager
+
+  sparkworker:
+    image: 127.0.0.1:5000/sparkworker
+    build: ./sparkworker/
+    deploy:
+      # https://docs.docker.com/engine/swarm/how-swarm-mode-works/services/#replicated-and-global-services
+      mode: global # run one task on each node
+    depends_on:
+      - sparkmaster
+    command: /spark/startup.sh
+
+  jupyterlab:
+    image: 127.0.0.1:5000/jupyterlab
+    build: ./jupyterlab/
+    hostname: jupyterlab
+    ports:
+      - target: 8888
+        published: 8888
+        mode: host
+    volumes:
+      - ./work:/home/jovyan/work
+    environment:
+      - JUPYTER_ENABLE_LAB=yes
+    deploy:
+      placement:
+        constraints:
+          - node.role == manager
