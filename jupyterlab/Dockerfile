@@ -1,9 +1,33 @@
 # https://jupyter-docker-stacks.readthedocs.io/en/latest/using/selecting.html
 FROM jupyter/tensorflow-notebook:latest
 
+ARG SPARK_FILE=spark-3.0.0-preview2-bin-hadoop2.7
 
-# conda install?
+USER root
 
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    nano procps openjdk-11-jdk \
+    #&& apt-get -y upgrade \
+    && rm -rf /var/lib/apt/lists/*
 
 # disable a required password to login
 RUN printf 'c.NotebookApp.token = "" ' >> ~/.jupyter/jupyter_notebook_config.py
+
+COPY ${SPARK_FILE}.tgz /
+
+WORKDIR /
+
+RUN tar -xzf ${SPARK_FILE}.tgz && \
+    mv ${SPARK_FILE} spark && \
+    rm ${SPARK_FILE}.tgz
+
+USER jovyan
+
+# install our specific version of Spark
+# https://sigdelta.com/blog/how-to-install-pyspark-locally/
+ENV SPARK_HOME="/spark/"
+ENV PYTHONPATH="$SPARK_HOME/python:$SPARK_HOME/python/lib/py4j-0.10.8.1-src.zip:$PYTHONPATH"
+ENV PYSPARK_SUBMIT_ARGS="--master sparkmaster[*]"
+ENV PATH="$SPARK_HOME:$SPARK_HOME/python:$PATH"
+
+WORKDIR /home/jovyan/
