@@ -33,7 +33,7 @@ services:
         published: 8888
         mode: host
     volumes:
-      - ./jupyterlab/work:/home/jovyan/work
+      - ./jupyterlab/work:/home/jovyan/work/
     environment:
       - JUPYTER_ENABLE_LAB=yes
     deploy:

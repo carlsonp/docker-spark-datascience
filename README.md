@@ -28,6 +28,15 @@ docker service create --name registry --publish 5000:5000 registry:latest
 docker service ls
 ```
 
+https://hub.docker.com/r/sameersbn/apt-cacher-ng/
+Deploy apt-cacher-ng to speed up builds and not re-download packages again
+
+```shell
+docker service create --name apt-cacher-ng --publish 3142:3142 sameersbn/apt-cacher-ng:latest
+```
+
+Check out the cache stats: http://localhost:3142/acng-report.html
+
 Build and save the images on the local registry, then deploy:
 
 ```shell
