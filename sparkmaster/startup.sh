@@ -1,4 +1,5 @@
 #!/bin/bash
 service nginx restart
-/spark/sbin/start-master.sh
-tail -f /dev/null
+# https://spark.apache.org/docs/latest/spark-standalone.html
+# ./bin/spark-class org.apache.spark.deploy.master.Master --help
+./bin/spark-class org.apache.spark.deploy.master.Master -h sparkmaster --webui-port 8090

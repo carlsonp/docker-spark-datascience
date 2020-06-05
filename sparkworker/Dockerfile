@@ -8,9 +8,11 @@ RUN echo 'Acquire::HTTP::Proxy "http://172.17.0.1:3142";' >> /etc/apt/apt.conf.d
     echo 'Acquire::HTTPS::Proxy "false";' >> /etc/apt/apt.conf.d/01proxy
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    nano procps openjdk-11-jdk lsof \
+    nano procps openjdk-11-jdk python3.7 \
     && apt-get -y upgrade \
     && rm -rf /var/lib/apt/lists/*
+
+RUN update-alternatives --install /usr/bin/python python /usr/bin/python3.7 10
 
 COPY ${SPARK_FILE}.tgz /
 

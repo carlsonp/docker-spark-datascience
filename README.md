@@ -1,10 +1,16 @@
 # docker-spark-datascience
 
+Spark, Jupyterlab, and other Data Science tooling via Docker Swarm
+
+## Setup
+
 https://docs.docker.com/engine/swarm/swarm-mode/
 
 ```shell
 docker swarm init --advertise-addr=192.168.1.166
 ```
+
+Setup across all nodes using provided token and command
 
 Nodes:
 
@@ -24,7 +30,7 @@ https://docs.docker.com/engine/swarm/stack-deploy/
 https://hub.docker.com/_/registry
 
 ```shell
-docker service create --name registry --publish 5000:5000 registry:latest
+docker service create --name registry --constraint node.role==manager --publish 5000:5000 registry:latest
 docker service ls
 ```
 
@@ -32,7 +38,7 @@ https://hub.docker.com/r/sameersbn/apt-cacher-ng/
 Deploy apt-cacher-ng to speed up builds and not re-download packages again
 
 ```shell
-docker service create --name apt-cacher-ng --publish 3142:3142 sameersbn/apt-cacher-ng:latest
+docker service create --name apt-cacher-ng --constraint node.role==manager --publish 3142:3142 sameersbn/apt-cacher-ng:latest
 ```
 
 Check out the cache stats: http://localhost:3142/acng-report.html

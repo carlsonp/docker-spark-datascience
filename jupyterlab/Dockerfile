@@ -25,13 +25,15 @@ RUN tar -xzf ${SPARK_FILE}.tgz && \
     mv ${SPARK_FILE} spark && \
     rm ${SPARK_FILE}.tgz
 
+RUN chown -R jovyan /spark/ /spark/*
+
 USER jovyan
 
-# install our specific version of Spark
+# install our specific version of pyspark
 # https://sigdelta.com/blog/how-to-install-pyspark-locally/
 ENV SPARK_HOME="/spark/"
 ENV PYTHONPATH="$SPARK_HOME/python:$SPARK_HOME/python/lib/py4j-0.10.8.1-src.zip:$PYTHONPATH"
-ENV PYSPARK_SUBMIT_ARGS="--master sparkmaster[*]"
+ENV PYSPARK_SUBMIT_ARGS="--master sparkmaster[*] pyspark-shell"
 ENV PATH="$SPARK_HOME:$SPARK_HOME/python:$PATH"
 
 WORKDIR /home/jovyan/

@@ -8,9 +8,11 @@ RUN echo 'Acquire::HTTP::Proxy "http://172.17.0.1:3142";' >> /etc/apt/apt.conf.d
     echo 'Acquire::HTTPS::Proxy "false";' >> /etc/apt/apt.conf.d/01proxy
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    nano procps openjdk-11-jdk nginx  \
+    nano procps openjdk-11-jdk nginx python3.7 \
     && apt-get -y upgrade \
     && rm -rf /var/lib/apt/lists/*
+
+RUN update-alternatives --install /usr/bin/python python /usr/bin/python3.7 10
 
 COPY ${SPARK_FILE}.tgz /
 
@@ -24,9 +26,5 @@ RUN tar -xzf ${SPARK_FILE}.tgz && \
     rm ${SPARK_FILE}.tgz
 
 COPY startup.sh /spark/startup.sh
-
-# https://spark.apache.org/docs/latest/spark-standalone.html
-RUN printf 'SPARK_MASTER_URL=spark://sparkmaster:7077 \n SPARK_MASTER_WEBUI_PORT=8090' >> /spark/conf/spark-env.sh && \
-    chmod +x /spark/conf/spark-env.sh
 
 WORKDIR /spark
