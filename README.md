@@ -64,23 +64,23 @@ docker stack services spark
 
 Open up the Spark web-ui
 
-http://192.168.1.166:8080
+http://localhost:8080
 
 Open up the Jupyterlab web-ui
 
-http://192.168.1.166:8000
+http://localhost:8000
 
 Look at workers as they execute
 
-http://192.168.1.166:8081
+http://localhost:8081
 
 Look at the submitter
 
-http://192.168.1.166:4040
+http://localhost:4040
 
 Look at Livy
 
-http://192.168.1.166:8998
+http://localhost:8998
 
 ## Teardown
 
