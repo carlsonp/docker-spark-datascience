@@ -1,6 +1,6 @@
 *.tgz
 *.zip
-
+/jupyterlab/cache/conda/*
 
 
 

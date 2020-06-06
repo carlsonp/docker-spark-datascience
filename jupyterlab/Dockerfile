@@ -1,5 +1,5 @@
 # https://jupyter-docker-stacks.readthedocs.io/en/latest/using/selecting.html
-FROM jupyter/tensorflow-notebook:latest
+FROM jupyter/datascience-notebook:latest
 
 ARG SPARK_FILE=spark-3.0.0-preview2-bin-hadoop2.7
 
@@ -9,10 +9,11 @@ USER root
 RUN echo 'Acquire::HTTP::Proxy "http://172.17.0.1:3142";' >> /etc/apt/apt.conf.d/01proxy && \
     echo 'Acquire::HTTPS::Proxy "false";' >> /etc/apt/apt.conf.d/01proxy
 
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    nano procps openjdk-11-jdk \
-    && apt-get -y upgrade \
-    && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+    nano procps openjdk-11-jdk software-properties-common dirmngr gpg-agent && \
+    apt-get -y upgrade && \
+    rm -rf /var/lib/apt/lists/*
 
 # disable a required password to login
 RUN printf 'c.NotebookApp.token = "" ' >> ~/.jupyter/jupyter_notebook_config.py
@@ -27,19 +28,21 @@ RUN tar -xzf ${SPARK_FILE}.tgz && \
 
 RUN chown -R jovyan /spark/ /spark/*
 
+# copy over our cached conda packages
+COPY ./cache/conda/ /home/jovyan/.conda/pkgs/
+
+# fix permissions on the entire jovyan home folder
+RUN chown -R jovyan /home/jovyan/ /home/jovyan/*
+
 USER jovyan
 
 # https://github.com/jupyter-incubator/sparkmagic
-RUN conda install --yes sparkmagic && \
-    conda clean -afy
+RUN conda install --yes sparkmagic
 
-RUN jupyter nbextension enable --py --sys-prefix widgetsnbextension
-
-RUN jupyter labextension install "@jupyter-widgets/jupyterlab-manager"
-
-RUN jupyter serverextension enable --py sparkmagic
-
-RUN mkdir -p /home/jovyan/.sparkmagic/
+RUN jupyter nbextension enable --py --sys-prefix widgetsnbextension && \
+    jupyter labextension install "@jupyter-widgets/jupyterlab-manager" && \
+    jupyter serverextension enable --py sparkmagic && \
+    mkdir -p /home/jovyan/.sparkmagic/
 
 COPY sparkmagic_config.json /home/jovyan/.sparkmagic/config.json
 
