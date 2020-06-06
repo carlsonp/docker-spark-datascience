@@ -29,6 +29,20 @@ RUN chown -R jovyan /spark/ /spark/*
 
 USER jovyan
 
+# https://github.com/jupyter-incubator/sparkmagic
+RUN conda install --yes sparkmagic && \
+    conda clean -afy
+
+RUN jupyter nbextension enable --py --sys-prefix widgetsnbextension
+
+RUN jupyter labextension install "@jupyter-widgets/jupyterlab-manager"
+
+RUN jupyter serverextension enable --py sparkmagic
+
+RUN mkdir -p /home/jovyan/.sparkmagic/
+
+COPY sparkmagic_config.json /home/jovyan/.sparkmagic/config.json
+
 # install our specific version of pyspark
 # https://sigdelta.com/blog/how-to-install-pyspark-locally/
 ENV SPARK_HOME="/spark/"

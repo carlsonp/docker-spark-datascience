@@ -38,10 +38,16 @@ https://hub.docker.com/r/sameersbn/apt-cacher-ng/
 Deploy apt-cacher-ng to speed up builds and not re-download packages again
 
 ```shell
-docker service create --name apt-cacher-ng --constraint node.role==manager --publish 3142:3142 sameersbn/apt-cacher-ng:latest
+# persist the downloaded packages here:
+sudo mkdir -p /srv/docker/apt-cacher-ng
+docker service create --name apt-cacher-ng --mount type=bind,src=/srv/docker/apt-cacher-ng,dst=/var/cache/apt-cacher-ng --constraint node.role==manager --publish 3142:3142 sameersbn/apt-cacher-ng:latest
 ```
 
 Check out the cache stats: http://localhost:3142/acng-report.html
+
+Download spark and copy it to `sparkmaster` and `sparkworker`.
+
+Download livy and copy it to `sparkmaster`.
 
 Build and save the images on the local registry, then deploy:
 
@@ -63,6 +69,18 @@ http://192.168.1.166:8080
 Open up the Jupyterlab web-ui
 
 http://192.168.1.166:8000
+
+Look at workers as they execute
+
+http://192.168.1.166:8081
+
+Look at the submitter
+
+http://192.168.1.166:4040
+
+Look at Livy
+
+http://192.168.1.166:8998
 
 ## Teardown
 
