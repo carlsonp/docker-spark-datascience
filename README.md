@@ -16,7 +16,7 @@ Nodes:
 
 * 192.168.1.166 - VirtualBox (master)
 * 192.168.1.171 - Dell XPS (worker)
-* 192.168.1.105 - to be replaced (worker)
+* 192.168.1.105 - Alienware (worker)
 * 192.168.1.124 - Laptop (worker)
 
 https://docs.docker.com/engine/swarm/manage-nodes/
@@ -60,6 +60,12 @@ Check the status of the stack
 ```shel
 docker stack ls
 docker stack services spark
+```
+
+Get the full details
+
+```shell
+docker stack ps spark --no-trunc
 ```
 
 Open up the Spark web-ui

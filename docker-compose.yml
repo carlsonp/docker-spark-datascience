@@ -11,6 +11,8 @@ services:
       - target: 8998
         published: 8998
         mode: host
+    environment:
+      TZ: "America/Denver"
     command: /spark/startup.sh
     deploy:
       placement:
@@ -23,6 +25,8 @@ services:
     deploy:
       # https://docs.docker.com/engine/swarm/how-swarm-mode-works/services/#replicated-and-global-services
       mode: global # run one task on each node
+    environment:
+      TZ: "America/Denver"
     ports:
       - 8081:8081
     depends_on:
@@ -41,10 +45,11 @@ services:
         published: 4040
         mode: host
     volumes:
-      - ./jupyterlab/work/:/home/jovyan/work/
-      - ./jupyterlab/cache/conda/:/home/jovyan/.conda/pkgs/
+      - ./jupyterlab/work/:/work
+    command: /startup.sh
     environment:
-      - JUPYTER_ENABLE_LAB=yes
+      JUPYTER_ENABLE_LAB: "yes"
+      TZ: "America/Denver"
     deploy:
       placement:
         constraints:

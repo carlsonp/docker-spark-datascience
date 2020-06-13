@@ -1,5 +1,5 @@
 # https://hub.docker.com/_/ubuntu
-FROM ubuntu:bionic
+FROM ubuntu:focal
 
 ARG SPARK_FILE=spark-3.0.0-preview2-bin-hadoop2.7
 ARG LIVY_FILE=apache-livy-0.7.0-incubating-bin
@@ -9,12 +9,13 @@ RUN echo 'Acquire::HTTP::Proxy "http://172.17.0.1:3142";' >> /etc/apt/apt.conf.d
     echo 'Acquire::HTTPS::Proxy "false";' >> /etc/apt/apt.conf.d/01proxy
 
 RUN apt-get update && \
+    DEBIAN_FRONTEND="noninteractive" apt-get -y install tzdata && \
     apt-get install -y --no-install-recommends \
-    nano procps openjdk-11-jdk nginx python3.7 unzip && \
+    nano procps openjdk-11-jdk nginx python3 unzip && \
     apt-get -y upgrade && \
     rm -rf /var/lib/apt/lists/*
 
-RUN update-alternatives --install /usr/bin/python python /usr/bin/python3.7 10
+RUN update-alternatives --install /usr/bin/python python /usr/bin/python3.8 10
 
 COPY ${SPARK_FILE}.tgz /
 
