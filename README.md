@@ -45,7 +45,7 @@ docker service create --name apt-cacher-ng --mount type=bind,src=/srv/docker/apt
 
 Check out the cache stats: http://localhost:3142/acng-report.html
 
-Download spark and copy it to `sparkmaster` and `sparkworker`.
+Download Spark and copy it to `sparkmaster`, `sparkworker`, and `jupyterlab`.
 
 Download livy and copy it to `sparkmaster`.
 
