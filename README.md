@@ -99,8 +99,4 @@ docker swarm leave --force
 
 ## Updates
 
-Download newer upstream versions
-
-```shell
-docker-compose build --pull
-```
+Download newer upstream versions by running `./build-deploy.sh`
