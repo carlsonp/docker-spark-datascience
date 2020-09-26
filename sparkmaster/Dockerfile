@@ -1,7 +1,7 @@
 # https://hub.docker.com/_/ubuntu
 FROM ubuntu:focal
 
-ARG SPARK_FILE=spark-3.0.0-bin-hadoop2.7
+ARG SPARK_FILE=spark-3.0.1-bin-hadoop2.7
 ARG LIVY_FILE=apache-livy-0.7.0-incubating-bin
 
 # for the apt-cacher-ng proxy
