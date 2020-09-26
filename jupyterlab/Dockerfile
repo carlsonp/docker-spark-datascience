@@ -18,7 +18,7 @@ RUN apt-get update && \
 
 RUN update-alternatives --install /usr/bin/python python /usr/bin/python3.8 10
 
-RUN pip3 install --no-cache-dir jupyterlab numpy
+RUN pip3 install --no-cache-dir jupyterlab numpy matplotlib plotly
 
 # disable a required password to login
 RUN mkdir -p ~/.jupyter/ && printf 'c.NotebookApp.token = "" ' >> ~/.jupyter/jupyter_notebook_config.py
