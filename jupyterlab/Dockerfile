@@ -1,7 +1,7 @@
 # https://hub.docker.com/_/ubuntu
 FROM ubuntu:focal
 
-ARG SPARK_FILE=spark-3.0.1-bin-hadoop2.7
+ARG SPARK_FILE=spark-3.0.2-bin-hadoop2.7
 
 USER root
 
@@ -12,9 +12,13 @@ RUN echo 'Acquire::HTTP::Proxy "http://172.17.0.1:3142";' >> /etc/apt/apt.conf.d
 RUN apt-get update && \
     DEBIAN_FRONTEND="noninteractive" apt-get -y install tzdata && \
     apt-get install -y --no-install-recommends \
-    nano procps openjdk-11-jdk software-properties-common dirmngr gpg-agent python3 python3-pip build-essential python3-dev libkrb5-dev nodejs npm python3-pymongo && \
+    nano curl procps openjdk-11-jdk software-properties-common dirmngr gpg-agent python3 python3-pip build-essential python3-dev libkrb5-dev python3-pymongo && \
     apt-get -y upgrade && \
     rm -rf /var/lib/apt/lists/*
+
+# https://github.com/nodesource/distributions/blob/master/README.md
+RUN curl -sL https://deb.nodesource.com/setup_15.x  | bash -
+RUN apt-get update && apt-get -y install nodejs
 
 RUN update-alternatives --install /usr/bin/python python /usr/bin/python3.8 10
 

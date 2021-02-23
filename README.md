@@ -100,3 +100,8 @@ docker swarm leave --force
 ## Updates
 
 Download newer upstream versions by running `./build-deploy.sh`
+
+## Debugging
+
+* `nload` - for live network usage
+* `htop` - for live CPU and RAM usage

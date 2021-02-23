@@ -1,7 +1,7 @@
 # https://hub.docker.com/_/ubuntu
 FROM ubuntu:focal
 
-ARG SPARK_FILE=spark-3.0.1-bin-hadoop2.7
+ARG SPARK_FILE=spark-3.0.2-bin-hadoop2.7
 
 # for the apt-cacher-ng proxy
 RUN echo 'Acquire::HTTP::Proxy "http://172.17.0.1:3142";' >> /etc/apt/apt.conf.d/01proxy && \
