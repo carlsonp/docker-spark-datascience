@@ -1,7 +1,7 @@
 # https://hub.docker.com/_/ubuntu
 FROM ubuntu:focal
 
-ARG SPARK_FILE=spark-3.0.2-bin-hadoop2.7
+ARG SPARK_FILE=spark-3.1.1-bin-hadoop2.7
 
 USER root
 
