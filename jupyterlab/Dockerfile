@@ -1,7 +1,7 @@
 # https://hub.docker.com/_/ubuntu
 FROM ubuntu:focal
 
-ARG SPARK_FILE=spark-3.1.1-bin-hadoop2.7
+ARG SPARK_FILE=spark-3.1.2-bin-hadoop3.2
 
 USER root
 
@@ -17,7 +17,7 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 # https://github.com/nodesource/distributions/blob/master/README.md
-RUN curl -sL https://deb.nodesource.com/setup_15.x  | bash -
+RUN curl -sL https://deb.nodesource.com/setup_16.x  | bash -
 RUN apt-get update && apt-get -y install nodejs
 
 RUN update-alternatives --install /usr/bin/python python /usr/bin/python3.8 10
