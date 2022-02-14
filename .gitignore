@@ -1,5 +1,6 @@
 *.tgz
 *.zip
+*.jar
 /jupyterlab/cache/conda/*
 # ignore everything expect Jupyter notebooks
 /jupyterlab/work/*

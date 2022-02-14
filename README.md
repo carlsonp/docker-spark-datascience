@@ -15,7 +15,6 @@ Setup across all nodes using provided token and command
 Nodes:
 
 * 192.168.1.166 - VirtualBox (master)
-* 192.168.1.171 - Dell XPS (worker)
 * 192.168.1.105 - Alienware (worker)
 * 192.168.1.124 - Laptop (worker)
 
@@ -48,6 +47,8 @@ Check out the cache stats: http://localhost:3142/acng-report.html
 Download Spark and copy it to `sparkmaster`, `sparkworker`, and `jupyterlab`.
 
 Download livy and copy it to `sparkmaster`.
+
+Download Spark NLP .jar and copy it to `sparkmaster` and `sparkworker`.
 
 Build and save the images on the local registry, then deploy:
 

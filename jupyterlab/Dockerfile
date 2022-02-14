@@ -2,6 +2,7 @@
 FROM ubuntu:focal
 
 ARG SPARK_FILE=spark-3.1.2-bin-hadoop3.2
+ARG SPARK_NLP_FILE=spark-nlp-assembly-3.2.1.jar
 
 USER root
 
@@ -22,7 +23,9 @@ RUN apt-get update && apt-get -y install nodejs
 
 RUN update-alternatives --install /usr/bin/python python /usr/bin/python3.8 10
 
-RUN pip3 install --no-cache-dir jupyterlab numpy matplotlib plotly scikit-learn
+RUN pip3 install --no-cache-dir jupyterlab numpy matplotlib plotly scikit-learn spark-nlp
+
+COPY ${SPARK_NLP_FILE} /
 
 # disable a required password to login
 RUN mkdir -p ~/.jupyter/ && printf 'c.NotebookApp.token = "" ' >> ~/.jupyter/jupyter_notebook_config.py
