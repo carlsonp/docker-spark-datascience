@@ -34,7 +34,7 @@ COPY startup.sh /spark/startup.sh
 # install our specific version of pyspark
 # https://sigdelta.com/blog/how-to-install-pyspark-locally/
 ENV SPARK_HOME="/spark/"
-ENV PYTHONPATH="$SPARK_HOME/python:$SPARK_HOME/python/lib/py4j-0.10.9-src.zip:$PYTHONPATH"
+ENV PYTHONPATH="$SPARK_HOME/python:$SPARK_HOME/python/lib/py4j-0.10.9.3-src.zip:$PYTHONPATH"
 ENV PATH="$SPARK_HOME:$SPARK_HOME/python:$PATH"
 
 WORKDIR /spark

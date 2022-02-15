@@ -18,7 +18,7 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 # https://github.com/nodesource/distributions/blob/master/README.md
-RUN curl -sL https://deb.nodesource.com/setup_16.x  | bash -
+RUN curl -sL https://deb.nodesource.com/setup_17.x  | bash -
 RUN apt-get update && apt-get -y install nodejs
 
 RUN update-alternatives --install /usr/bin/python python /usr/bin/python3.8 10
@@ -56,7 +56,7 @@ COPY startup.sh /startup.sh
 # install our specific version of pyspark
 # https://sigdelta.com/blog/how-to-install-pyspark-locally/
 ENV SPARK_HOME="/spark/"
-ENV PYTHONPATH="$SPARK_HOME/python:$SPARK_HOME/python/lib/py4j-0.10.9-src.zip:$PYTHONPATH"
+ENV PYTHONPATH="$SPARK_HOME/python:$SPARK_HOME/python/lib/py4j-0.10.9.3-src.zip:$PYTHONPATH"
 ENV PYSPARK_SUBMIT_ARGS="--master sparkmaster[*] pyspark-shell"
 ENV PATH="$SPARK_HOME:$SPARK_HOME/python:$PATH"
 

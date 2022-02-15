@@ -67,11 +67,11 @@ docker stack ps spark --no-trunc
 
 Open up the Spark web-ui
 
-http://localhost:8080
+http://localhost:8090
 
 Open up the Jupyterlab web-ui
 
-http://localhost:8000
+http://localhost:8888
 
 Look at workers as they execute
 
