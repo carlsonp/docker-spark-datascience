@@ -7,14 +7,15 @@ Spark, Jupyterlab, and other Data Science tooling via Docker Swarm
 https://docs.docker.com/engine/swarm/swarm-mode/
 
 ```shell
-docker swarm init --advertise-addr=192.168.1.166
+docker swarm init --advertise-addr=192.168.1.113 --listen-addr=0.0.0.0
 ```
 
 Setup across all nodes using provided token and command
 
 Nodes:
 
-* 192.168.1.166 - VirtualBox (master)
+* 192.168.1.113 - Asus-Blue (master)
+* 192.168.1.145 - Windows WSL2 (worker)
 * 192.168.1.105 - Alienware (worker)
 * 192.168.1.124 - Laptop (worker)
 
@@ -26,29 +27,24 @@ docker node ls
 ```
 
 https://docs.docker.com/engine/swarm/stack-deploy/
-https://hub.docker.com/_/registry
+
+Use existing Docker image registry on Raspberry Pi.
+
+Add the following to your `daemon.json` Docker file:
+
+```file
+"insecure-registries": ["192.168.1.226:5000"]
+```
 
 ```shell
-docker service create --name registry --constraint node.role==manager --publish 5000:5000 registry:latest
 docker service ls
 ```
-
-https://hub.docker.com/r/sameersbn/apt-cacher-ng/
-Deploy apt-cacher-ng to speed up builds and not re-download packages again
-
-```shell
-# persist the downloaded packages here:
-sudo mkdir -p /srv/docker/apt-cacher-ng
-docker service create --name apt-cacher-ng --mount type=bind,src=/srv/docker/apt-cacher-ng,dst=/var/cache/apt-cacher-ng --constraint node.role==manager --publish 3142:3142 sameersbn/apt-cacher-ng:latest
-```
-
-Check out the cache stats: http://localhost:3142/acng-report.html
 
 Download Spark and copy it to `sparkmaster`, `sparkworker`, and `jupyterlab`.
 
 Download livy and copy it to `sparkmaster`.
 
-Download Spark NLP .jar and copy it to `sparkmaster` and `sparkworker`.
+Download Spark NLP .jar and copy it to `sparkmaster`, `sparkworker`, and `jupyterlab`.
 
 Build and save the images on the local registry, then deploy:
 

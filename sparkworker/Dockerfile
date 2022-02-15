@@ -1,11 +1,11 @@
 # https://hub.docker.com/_/ubuntu
 FROM ubuntu:focal
 
-ARG SPARK_FILE=spark-3.1.2-bin-hadoop3.2
-ARG SPARK_NLP_FILE=spark-nlp-assembly-3.2.1.jar
+ARG SPARK_FILE=spark-3.2.1-bin-hadoop3.2
+ARG SPARK_NLP_FILE=spark-nlp-assembly-3.4.1.jar
 
-# for the apt-cacher-ng proxy
-RUN echo 'Acquire::HTTP::Proxy "http://172.17.0.1:3142";' >> /etc/apt/apt.conf.d/01proxy && \
+# for the local apt-cacher-ng proxy
+RUN echo 'Acquire::HTTP::Proxy "http://192.168.1.226:3142";' >> /etc/apt/apt.conf.d/01proxy && \
     echo 'Acquire::HTTPS::Proxy "false";' >> /etc/apt/apt.conf.d/01proxy
 
 RUN apt-get update && \
