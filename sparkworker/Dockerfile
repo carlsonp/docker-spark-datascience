@@ -1,11 +1,11 @@
 # https://hub.docker.com/_/ubuntu
-FROM ubuntu:focal
+FROM ubuntu:22.04
 
-ARG SPARK_FILE=spark-3.2.1-bin-hadoop3.2
-ARG SPARK_NLP_FILE=spark-nlp-assembly-3.4.1.jar
+ARG SPARK_FILE=spark-3.3.0-bin-hadoop3
+ARG SPARK_NLP_FILE=spark-nlp-assembly-4.0.0.jar
 
 # for the local apt-cacher-ng proxy
-RUN echo 'Acquire::HTTP::Proxy "http://192.168.1.226:3142";' >> /etc/apt/apt.conf.d/01proxy && \
+RUN echo 'Acquire::HTTP::Proxy "${APT_CACHE_PROXY}";' >> /etc/apt/apt.conf.d/01proxy && \
     echo 'Acquire::HTTPS::Proxy "false";' >> /etc/apt/apt.conf.d/01proxy
 
 RUN apt-get update && \
@@ -15,7 +15,7 @@ RUN apt-get update && \
     apt-get -y upgrade && \
     rm -rf /var/lib/apt/lists/*
 
-RUN update-alternatives --install /usr/bin/python python /usr/bin/python3.8 10
+RUN update-alternatives --install /usr/bin/python python /usr/bin/python3.10 10
 
 RUN pip3 install --no-cache-dir numpy
 
@@ -30,6 +30,8 @@ RUN tar -xzf ${SPARK_FILE}.tgz && \
 COPY ${SPARK_NLP_FILE} /spark/jars/
 
 COPY startup.sh /spark/startup.sh
+
+RUN chmod +x /spark/startup.sh
 
 # install our specific version of pyspark
 # https://sigdelta.com/blog/how-to-install-pyspark-locally/

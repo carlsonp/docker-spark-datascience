@@ -12,7 +12,11 @@ services:
         published: 8998
         mode: host
     environment:
-      TZ: "America/Denver"
+      - TZ= "America/Denver"
+      #- SPARK_FILE= ${SPARK_FILE}
+      #- SPARK_NLP_FILE= ${SPARK_NLP_FILE}
+      #- LIVY_FILE= ${LIVY_FILE}
+      - APT_CACHE_PROXY= ${APT_CACHE_PROXY}
     command: /spark/startup.sh
     deploy:
       placement:
@@ -26,7 +30,11 @@ services:
       # https://docs.docker.com/engine/swarm/how-swarm-mode-works/services/#replicated-and-global-services
       mode: global # run one task on each node
     environment:
-      TZ: "America/Denver"
+      - TZ= "America/Denver"
+      #- SPARK_FILE= ${SPARK_FILE}
+      #- SPARK_NLP_FILE= ${SPARK_NLP_FILE}
+      #- LIVY_FILE= ${LIVY_FILE}
+      - APT_CACHE_PROXY= ${APT_CACHE_PROXY}
     ports:
       - 8081:8081
     depends_on:
@@ -48,8 +56,12 @@ services:
       - ./jupyterlab/work/:/work
     command: /startup.sh
     environment:
-      JUPYTER_ENABLE_LAB: "yes"
-      TZ: "America/Denver"
+      - JUPYTER_ENABLE_LAB= "yes"
+      - TZ= "America/Denver"
+      #- SPARK_FILE= ${SPARK_FILE}
+      #- SPARK_NLP_FILE= ${SPARK_NLP_FILE}
+      #- LIVY_FILE= ${LIVY_FILE}
+      - APT_CACHE_PROXY= ${APT_CACHE_PROXY}
     deploy:
       placement:
         constraints:

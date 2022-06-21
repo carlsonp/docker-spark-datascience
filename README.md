@@ -2,7 +2,16 @@
 
 Spark, Jupyterlab, and other Data Science tooling via Docker Swarm
 
+## Requirements
+
+* Docker
+* docker-compose
+* Existing Docker registry for storing images
+* Existing caching layer for .deb packages
+
 ## Setup
+
+Edit the `.env` file.
 
 https://docs.docker.com/engine/swarm/swarm-mode/
 
@@ -28,7 +37,7 @@ docker node ls
 
 https://docs.docker.com/engine/swarm/stack-deploy/
 
-Use existing Docker image registry on Raspberry Pi.
+Use existing Docker image registry
 
 Add the following to your `daemon.json` Docker file:
 

@@ -1,13 +1,13 @@
 # https://hub.docker.com/_/ubuntu
-FROM ubuntu:focal
+FROM ubuntu:22.04
 
-ARG SPARK_FILE=spark-3.2.1-bin-hadoop3.2
-ARG SPARK_NLP_FILE=spark-nlp-assembly-3.4.1.jar
+ARG SPARK_FILE=spark-3.3.0-bin-hadoop3
+ARG SPARK_NLP_FILE=spark-nlp-assembly-4.0.0.jar
 
 USER root
 
 # for the local apt-cacher-ng proxy
-RUN echo 'Acquire::HTTP::Proxy "http://192.168.1.226:3142";' >> /etc/apt/apt.conf.d/01proxy && \
+RUN echo 'Acquire::HTTP::Proxy "${APT_CACHE_PROXY}";' >> /etc/apt/apt.conf.d/01proxy && \
     echo 'Acquire::HTTPS::Proxy "false";' >> /etc/apt/apt.conf.d/01proxy
 
 RUN apt-get update && \
@@ -18,13 +18,15 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 # https://github.com/nodesource/distributions/blob/master/README.md
-RUN curl -sL https://deb.nodesource.com/setup_17.x  | bash -
+RUN curl -sL https://deb.nodesource.com/setup_18.x  | bash -
 RUN apt-get update && apt-get -y install nodejs
 
-RUN update-alternatives --install /usr/bin/python python /usr/bin/python3.8 10
+RUN update-alternatives --install /usr/bin/python python /usr/bin/python3.10 10
 
 RUN pip3 install --no-cache-dir jupyterlab numpy matplotlib plotly scikit-learn spark-nlp
 
+# download "fat" JAR from Github releases page
+# https://github.com/JohnSnowLabs/spark-nlp/releases
 COPY ${SPARK_NLP_FILE} /
 
 # disable a required password to login
@@ -43,7 +45,7 @@ RUN pip3 install --no-cache-dir sparkmagic
 
 RUN jupyter nbextension enable --py --sys-prefix widgetsnbextension && \
     jupyter labextension install "@jupyter-widgets/jupyterlab-manager" && \
-    cd /usr/local/lib/python3.8/dist-packages && \
+    cd /usr/local/lib/python3.10/dist-packages && \
     jupyter-kernelspec install sparkmagic/kernels/sparkkernel && \
     jupyter-kernelspec install sparkmagic/kernels/pysparkkernel && \
     jupyter serverextension enable --py sparkmagic && \
@@ -52,6 +54,8 @@ RUN jupyter nbextension enable --py --sys-prefix widgetsnbextension && \
 COPY sparkmagic_config.json /root/.sparkmagic/config.json
 
 COPY startup.sh /startup.sh
+
+RUN chmod +x /startup.sh
 
 # install our specific version of pyspark
 # https://sigdelta.com/blog/how-to-install-pyspark-locally/
