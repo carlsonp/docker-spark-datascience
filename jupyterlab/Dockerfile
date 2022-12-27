@@ -1,7 +1,7 @@
 # https://hub.docker.com/_/ubuntu
 FROM ubuntu:22.04
 
-ARG SPARK_FILE=spark-3.3.0-bin-hadoop3
+ARG SPARK_FILE=spark-3.3.1-bin-hadoop3
 ARG SPARK_NLP_FILE=spark-nlp-assembly-4.0.0.jar
 
 USER root
